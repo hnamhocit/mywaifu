@@ -70,6 +70,11 @@ const AutocompleteInput: FC<AutocompleteInputProps> = ({
         e.preventDefault();
         if (computedSuggestions.length > 0 && showSuggestions) {
           handleSelect(computedSuggestions[activeSuggest]);
+        } else {
+          const value = inputRef.current?.value as string;
+          if (value !== "") {
+            handleSelect(value);
+          }
         }
       }
     };
@@ -118,15 +123,15 @@ const AutocompleteInput: FC<AutocompleteInputProps> = ({
         onBlur={handleInputBlur}
         type="text"
         placeholder="Enter to submit"
-        className="block rounded-2xl bg-gray-950 px-4 py-1 text-white focus:outline-none"
+        className="block rounded-md max-w-40 bg-gray-950 px-3 py-2 text-white focus:outline-none"
       />
 
       <div
         className={clsx(
           "absolute top-full left-0 z-10 w-full space-y-1 rounded-2xl border bg-white p-2 shadow-md transition-all",
           {
-            "opacity-100 translate-y-2": showSuggestions,
-            "opacity-0 -translate-y-2": !showSuggestions,
+            "opacity-100 visible translate-y-2": showSuggestions,
+            "opacity-0 invisible -translate-y-2": !showSuggestions,
           },
         )}
       >

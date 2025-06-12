@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, memo, SetStateAction } from "react";
 import Filter from "../Filter";
 
 interface RatingFilterProps {
@@ -19,4 +19,4 @@ const RatingFilter: FC<RatingFilterProps> = ({ ratings, setRatings }) => {
   );
 };
 
-export default RatingFilter;
+export default memo(RatingFilter);

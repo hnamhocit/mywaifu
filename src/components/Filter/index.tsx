@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, memo, SetStateAction } from "react";
 import AutocompleteInput from "../AutocompleteInput";
 import { X } from "lucide-react";
 
@@ -11,10 +11,10 @@ interface FilterProps {
 
 const Filter: FC<FilterProps> = ({ items, setItems, title, suggestions }) => {
   return (
-    <div className="space-y-3">
-      <div className="text-lg font-semibold">{title}</div>
+    <div className="space-y-1">
+      <div className="text-gray-700 font-medium">{title}</div>
 
-      <div className="flex items-center gap-3 flex-wrap p-2 rounded-md">
+      <div className="flex items-center flex-wrap gap-3">
         <AutocompleteInput
           items={items}
           setItems={setItems}
@@ -24,7 +24,7 @@ const Filter: FC<FilterProps> = ({ items, setItems, title, suggestions }) => {
         {items.map((s, i) => (
           <div
             key={i}
-            className="flex items-center gap-2 py-1 px-2 rounded-md border shadow text-sm font-medium"
+            className="flex items-center w-fit gap-2 py-1 px-2 rounded-md border shadow text-sm font-medium"
           >
             {s}
             <button
@@ -40,4 +40,4 @@ const Filter: FC<FilterProps> = ({ items, setItems, title, suggestions }) => {
   );
 };
 
-export default Filter;
+export default memo(Filter);

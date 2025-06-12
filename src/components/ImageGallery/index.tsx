@@ -1,15 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import RatingFilter from "@/components/RatingFilter";
-import TagFilter from "@/components/TagFilter";
+import React, { useCallback, useEffect, useState } from "react";
 import { IImage, NekosAPIQueryParams } from "@/interfaces";
 import MyImage from "../MyImage";
 import MyPagination from "./MyPagination";
-import Loading from "../Loading";
 import { toast } from "sonner";
+import SkeletonImage from "../SkeletonImage";
+import FilterDialog from "./FilterDialog";
 
-const ITEMS_PER_PAGE = 52;
+const ITEMS_PER_PAGE = 32;
 
 const ImageGallery = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -55,21 +54,34 @@ const ImageGallery = () => {
     }
   };
 
-  useEffect(() => {
-    fetchImages({
-      rating: "explicit",
-      limit: `${ITEMS_PER_PAGE}`,
-      offset: `${(page - 1) * ITEMS_PER_PAGE}`,
-    });
-  }, [page]);
+  const fetchImagesWithFilter = useCallback(async () => {
+    const offset = (page - 1) * ITEMS_PER_PAGE;
+    const config: NekosAPIQueryParams = {
+      offset: String(offset),
+      limit: String(ITEMS_PER_PAGE),
+    };
 
-  if (isLoading) return <Loading />;
+    if (ratings.length > 0) {
+      config.rating = ratings.join(",");
+    }
+
+    if (tags.length > 0) {
+      config.tags = tags.join(",");
+    }
+
+    await fetchImages(config);
+  }, [ratings, tags, page]);
+
+  useEffect(() => {
+    fetchImagesWithFilter();
+  }, []);
 
   const totalPages = Math.ceil(count / ITEMS_PER_PAGE);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages && !isLoading) {
       setPage(page);
+      fetchImagesWithFilter();
     }
   };
 
@@ -104,16 +116,21 @@ const ImageGallery = () => {
 
   return (
     <div className="container mx-auto space-y-7">
-      <div className="flex items-center gap-7 flex-wrap">
-        <RatingFilter ratings={ratings} setRatings={setRatings} />
-
-        <TagFilter tags={tags} setTags={setTags} />
-      </div>
+      <FilterDialog
+        ratings={ratings}
+        tags={tags}
+        setTags={setTags}
+        setRatings={setRatings}
+        isLoading={isLoading}
+        fetchImagesWithFilter={fetchImagesWithFilter}
+      />
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {images.map((item) => (
-          <MyImage key={item.id} {...item} />
-        ))}
+        {isLoading
+          ? Array.from({ length: ITEMS_PER_PAGE }).map((_, index) => (
+              <SkeletonImage key={index} />
+            ))
+          : images.map((item) => <MyImage key={item.id} {...item} />)}
       </div>
 
       <MyPagination

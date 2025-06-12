@@ -1,14 +1,14 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, memo, SetStateAction } from "react";
 import Filter from "../Filter";
 
-interface RatingFilterProps {
+interface TagFilterProps {
   tags: string[];
   setTags: Dispatch<SetStateAction<string[]>>;
 }
 
-const suggestions = ["safe", "suggestive", "borderline", "explicit"];
+const suggestions: string[] = [];
 
-const RatingFilter: FC<RatingFilterProps> = ({ tags, setTags }) => {
+const TagFilter: FC<TagFilterProps> = ({ tags, setTags }) => {
   return (
     <Filter
       title="Tag"
@@ -19,4 +19,4 @@ const RatingFilter: FC<RatingFilterProps> = ({ tags, setTags }) => {
   );
 };
 
-export default RatingFilter;
+export default memo(TagFilter);

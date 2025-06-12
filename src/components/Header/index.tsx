@@ -1,4 +1,6 @@
-import { Input } from "../ui/input";
+import { Facebook, Github } from "lucide-react";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -9,11 +11,24 @@ const Header = () => {
           src="/logo.png"
           alt="App Logo"
         />
-        <div className="text-xl font-bold">MyWaifu</div>
+
+        <div className="text-xl text-transparent bg-clip-text font-bold bg-linear-65 from-purple-500 to-pink-500">
+          MyWaifu
+        </div>
       </div>
 
-      <div>
-        <Input />
+      <div className="flex items-center gap-3">
+        <Link href="https://github.com/hnamhocit">
+          <Button size="icon">
+            <Github />
+          </Button>
+        </Link>
+
+        <Link href="https://facebook.com/hnamhocit">
+          <Button size="icon">
+            <Facebook />
+          </Button>
+        </Link>
       </div>
     </header>
   );
