@@ -1,4 +1,4 @@
-import { Dispatch, FC, memo, SetStateAction } from "react";
+import { Dispatch, FC, memo, SetStateAction, useCallback } from "react";
 import AutocompleteInput from "../AutocompleteInput";
 import { X } from "lucide-react";
 
@@ -10,6 +10,17 @@ interface FilterProps {
 }
 
 const Filter: FC<FilterProps> = ({ items, setItems, title, suggestions }) => {
+  const name = title.toLowerCase() + "s";
+
+  const handleRemove = useCallback(
+    (s: string) => {
+      const newItems = items.filter((i) => i !== s);
+      setItems(newItems);
+      localStorage.setItem(name, JSON.stringify(newItems));
+    },
+    [items],
+  );
+
   return (
     <div className="space-y-1">
       <div className="text-gray-700 font-medium">{title}</div>
@@ -19,6 +30,7 @@ const Filter: FC<FilterProps> = ({ items, setItems, title, suggestions }) => {
           items={items}
           setItems={setItems}
           suggestions={suggestions}
+          name={title.toLowerCase() + "s"}
         />
 
         {items.map((s, i) => (
@@ -28,7 +40,7 @@ const Filter: FC<FilterProps> = ({ items, setItems, title, suggestions }) => {
           >
             {s}
             <button
-              onClick={() => setItems((prev) => prev.filter((_s) => _s !== s))}
+              onClick={() => handleRemove(s)}
               className="block p-1 cursor-pointer rounded-full bg-red-500 text-white"
             >
               <X size={14} />

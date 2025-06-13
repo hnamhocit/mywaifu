@@ -16,12 +16,14 @@ interface AutocompleteInputProps
   suggestions: string[];
   items: string[];
   setItems: Dispatch<SetStateAction<string[]>>;
+  name: string;
 }
 
 const AutocompleteInput: FC<AutocompleteInputProps> = ({
   suggestions,
   items,
   setItems,
+  name,
   ...rest
 }) => {
   const [value, setValue] = useState("");
@@ -86,17 +88,21 @@ const AutocompleteInput: FC<AutocompleteInputProps> = ({
     };
   }, [computedSuggestions, showSuggestions, activeSuggest]);
 
-  const handleSelect = (selectedS: string) => {
-    setItems((prev) => [...prev, selectedS]);
-    setValue("");
-    setShowSuggestions(false);
-    setActiveSuggest(0);
-    inputRef.current?.focus();
-  };
+  const handleSelect = useCallback(
+    (selectedS: string) => {
+      const newItems = [...items, selectedS];
+      localStorage.setItem(name, JSON.stringify(newItems));
+      setItems(newItems);
+      setValue("");
+      setShowSuggestions(false);
+      setActiveSuggest(0);
+      inputRef.current?.focus();
+    },
+    [items],
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value);
-    console.log(e.currentTarget.value);
   };
 
   const handleInputFocus = useCallback(() => {
