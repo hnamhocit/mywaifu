@@ -9,6 +9,7 @@ import SkeletonImage from "../SkeletonImage";
 import FilterDialog from "./FilterDialog";
 import { Button } from "../ui/button";
 import { RefreshCw } from "lucide-react";
+import clsx from "clsx";
 
 const ITEMS_PER_PAGE = 32;
 
@@ -163,8 +164,15 @@ const ImageGallery = () => {
           {isRandom ? "Random" : "Search"} Mode
         </Button>
 
-        <Button ref={reloadBtnRef} size="icon" onClick={fetchImagesWithFilter}>
-          <RefreshCw />
+        <Button
+          disabled={isLoading}
+          ref={reloadBtnRef}
+          size="icon"
+          onClick={fetchImagesWithFilter}
+        >
+          <RefreshCw
+            className={clsx("transition-transform", isLoading && "rotate-45")}
+          />
         </Button>
       </div>
 
