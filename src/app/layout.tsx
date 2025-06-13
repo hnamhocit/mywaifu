@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: "MyWaifu",
     images: [
       {
-        url: "https://mywaifu.vercel.app/og-image.jpg",
+        url: "https://mywaifu.vercel.app/logo.png",
         width: 1200,
         height: 630,
         alt: "MyWaifu Cover Image",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@hnamhocit",
     creator: "@hnamhocit",
-    images: ["https://mywaifu.vercel.app/og-image.jpg"],
+    images: ["https://mywaifu.vercel.app/logo.png"],
   },
 };
 
