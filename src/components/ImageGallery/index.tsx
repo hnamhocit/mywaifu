@@ -88,7 +88,6 @@ const ImageGallery = () => {
     if (typeof window !== "undefined") {
       const storedRatings = localStorage.getItem("ratings");
       const storedTags = localStorage.getItem("tags");
-      const storedPage = localStorage.getItem("page");
 
       if (storedRatings) {
         const parsedRatings = JSON.parse(storedRatings);
@@ -98,11 +97,6 @@ const ImageGallery = () => {
       if (storedTags) {
         const parsedTags = JSON.parse(storedTags);
         setTags(parsedTags);
-      }
-
-      if (storedPage) {
-        const parsedPage = JSON.parse(storedPage);
-        setPage(Number(parsedPage));
       }
 
       setIsTrigger(true);
@@ -120,7 +114,6 @@ const ImageGallery = () => {
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages && !isLoading) {
       setPage(page);
-      localStorage.setItem("page", page.toString());
       fetchImagesWithFilter();
     }
   };
